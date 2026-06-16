@@ -1,0 +1,8 @@
+*
+!.gitignore
+!README.md
+!PROGRAMMING_MANUAL.md
+!anymatix/
+!anymatix/**
+!assets/
+!assets/**

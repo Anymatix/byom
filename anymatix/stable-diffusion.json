@@ -1,0 +1,332 @@
+{
+  "name": "Stable Diffusion (example)",
+  "comment": "SD 1.5 with branch selector and shared base setup — BYOM seed example.",
+  "elements": {
+    "e18aaafb-8248-4157-bf08-b7990d55c594": {
+      "name": "Negative Prompt",
+      "label": "config",
+      "description": "Describe what to avoid.",
+      "expression": {
+        "value": {
+          "immediate": "ugly, deformed, cartoon, text, overlay",
+          "type": "text"
+        }
+      }
+    },
+    "bd39affa-ff76-4942-9405-1a4706df3fa1": {
+      "elements": {
+        "98ac283f-d183-4883-ae13-89c312b36388": {
+          "name": "Checkpoint URL",
+          "label": "advanced",
+          "description": "Checkpoint download URL.",
+          "expression": {
+            "value": {
+              "immediate": "https://civitai.com/api/download/models/143906?type=Model&format=SafeTensor&size=pruned&fp=fp16",
+              "type": "url/checkpoint"
+            }
+          }
+        },
+        "bd3a641f-d0fb-4145-8ca3-0e59a883d151": {
+          "name": "Download Checkpoint",
+          "label": "advanced",
+          "description": "Download the checkpoint.",
+          "expression": {
+            "method": "AnymatixFetcher",
+            "args": {
+              "url": "98ac283f-d183-4883-ae13-89c312b36388"
+            }
+          }
+        },
+        "59615278-e604-44f7-a270-b3eaa6857ab1": {
+          "name": "Load Checkpoint",
+          "label": "advanced",
+          "description": "Load the checkpoint.",
+          "expression": {
+            "method": "AnymatixCheckpointLoader",
+            "args": {
+              "ckpt_name": "bd3a641f-d0fb-4145-8ca3-0e59a883d151"
+            }
+          }
+        },
+        "8a6f6324-6ad8-4e1d-b71d-76dc90f99ed8": {
+          "name": "Height",
+          "label": "config",
+          "description": "Output image height.",
+          "expression": {
+            "value": {
+              "immediate": "768",
+              "type": "resolution"
+            }
+          }
+        },
+        "037fd9a0-79ff-4d10-888e-0a968a55ff17": {
+          "name": "Width",
+          "label": "config",
+          "description": "Output image width.",
+          "expression": {
+            "value": {
+              "immediate": "768",
+              "type": "resolution"
+            }
+          }
+        },
+        "14a9a11b-3918-4a1e-8ccc-538c2529b7fd": {
+          "name": "Empty Latents",
+          "label": "advanced",
+          "description": "Create the starting latent image.",
+          "expression": {
+            "method": "EmptyLatentImage",
+            "args": {
+              "width": "037fd9a0-79ff-4d10-888e-0a968a55ff17",
+              "height": "8a6f6324-6ad8-4e1d-b71d-76dc90f99ed8"
+            }
+          }
+        },
+        "2a4de1b0-7f90-4581-8126-0206dc099a6f": {
+          "name": "Guidance",
+          "label": "config",
+          "description": "Prompt guidance strength.",
+          "expression": {
+            "value": {
+              "immediate": "8",
+              "type": "cfg"
+            }
+          }
+        },
+        "07e82859-efe7-472c-a1bb-dc3526380158": {
+          "name": "Denoise Strength",
+          "label": "advanced",
+          "description": "How strongly to redraw the latent.",
+          "expression": {
+            "value": {
+              "immediate": "1",
+              "type": "strength"
+            }
+          }
+        },
+        "eb9c6564-ba7f-4868-83b9-6d4b0a822bfc": {
+          "name": "Sampler",
+          "label": "advanced",
+          "description": "Sampling algorithm.",
+          "expression": {
+            "value": {
+              "immediate": "euler",
+              "type": "sampler"
+            }
+          }
+        },
+        "87e1ab3b-373d-4f7a-a434-cf718629824f": {
+          "name": "Scheduler",
+          "label": "advanced",
+          "description": "Sampling schedule.",
+          "expression": {
+            "value": {
+              "immediate": "normal",
+              "type": "scheduler"
+            }
+          }
+        },
+        "c0d720fd-247c-459c-ac47-05aaa6911436": {
+          "name": "Seed",
+          "label": "config",
+          "description": "Controls random variation.",
+          "expression": {
+            "value": {
+              "immediate": "1027703642",
+              "type": "seed"
+            }
+          }
+        },
+        "e51ccd43-e1ea-4c8b-a57f-542919ca0035": {
+          "name": "Steps",
+          "label": "config",
+          "description": "Number of sampling steps.",
+          "expression": {
+            "value": {
+              "immediate": "20",
+              "type": "count"
+            }
+          }
+        },
+        "a531da53-1f6f-4287-8748-438b017299c2": {
+          "name": "Encode Negative Prompt",
+          "label": "advanced",
+          "description": "Encode the shared negative prompt.",
+          "expression": {
+            "method": "CLIPTextEncode",
+            "args": {
+              "text": "e18aaafb-8248-4157-bf08-b7990d55c594",
+              "clip": {
+                "id": "59615278-e604-44f7-a270-b3eaa6857ab1",
+                "slot": 1
+              }
+            }
+          }
+        }
+      },
+      "name": "Base Setup",
+      "comment": "Shared SD 1.5 setup used by both selector branches.",
+      "collapsed": false
+    },
+    "c9a4397e-7334-44c9-9222-e8e1756cf453": {
+      "elements": {
+        "416fd090-6853-44f1-aab5-88a7ceaac584": {
+          "name": "Prompt",
+          "label": "basic",
+          "description": "Prompt for the false branch.",
+          "expression": {
+            "value": {
+              "immediate": "studio product photo of a glossy red apple on a white seamless background",
+              "type": "text"
+            }
+          }
+        },
+        "1778918d-438b-4cd1-a6b9-73b289804441": {
+          "name": "Encode Positive Prompt",
+          "label": "advanced",
+          "description": "Encode the false-branch prompt.",
+          "expression": {
+            "method": "CLIPTextEncode",
+            "args": {
+              "text": "416fd090-6853-44f1-aab5-88a7ceaac584",
+              "clip": {
+                "id": "59615278-e604-44f7-a270-b3eaa6857ab1",
+                "slot": 1
+              }
+            }
+          }
+        },
+        "1571490c-ad26-4ccc-956f-6e82626b8424": {
+          "name": "Sample Latents",
+          "label": "advanced",
+          "description": "Generate latents for the false branch.",
+          "expression": {
+            "method": "KSampler",
+            "args": {
+              "positive": "1778918d-438b-4cd1-a6b9-73b289804441",
+              "negative": "a531da53-1f6f-4287-8748-438b017299c2",
+              "seed": "c0d720fd-247c-459c-ac47-05aaa6911436",
+              "model": {
+                "id": "59615278-e604-44f7-a270-b3eaa6857ab1",
+                "slot": 0
+              },
+              "latent_image": "14a9a11b-3918-4a1e-8ccc-538c2529b7fd",
+              "steps": "e51ccd43-e1ea-4c8b-a57f-542919ca0035",
+              "cfg": "2a4de1b0-7f90-4581-8126-0206dc099a6f",
+              "sampler_name": "eb9c6564-ba7f-4868-83b9-6d4b0a822bfc",
+              "scheduler": "87e1ab3b-373d-4f7a-a434-cf718629824f",
+              "denoise": "07e82859-efe7-472c-a1bb-dc3526380158"
+            }
+          }
+        }
+      },
+      "name": "False Branch",
+      "comment": "Prompt branch used when the selector is false.",
+      "collapsed": false
+    },
+    "9366e253-ca8e-4e38-9db7-131bad8f446f": {
+      "name": "Branch Selector",
+      "label": "basic",
+      "description": "Choose which prompt branch should execute.",
+      "expression": {
+        "value": {
+          "immediate": "first_branch",
+          "type": "selector_branch_choice"
+        }
+      }
+    },
+    "32f96a50-f9e8-47f2-a2cd-bd9ecd8108ff": {
+      "elements": {
+        "e0583f47-c154-4646-957c-4b0508841be2": {
+          "name": "Prompt",
+          "label": "basic",
+          "description": "Prompt for the true branch.",
+          "expression": {
+            "value": {
+              "immediate": "studio photograph of a blue vintage car under cinematic lighting",
+              "type": "text"
+            }
+          }
+        },
+        "db8887e9-5222-4eb1-bab4-a3d8111aea1e": {
+          "name": "Encode Positive Prompt",
+          "label": "advanced",
+          "description": "Encode the true-branch prompt.",
+          "expression": {
+            "method": "CLIPTextEncode",
+            "args": {
+              "text": "e0583f47-c154-4646-957c-4b0508841be2",
+              "clip": {
+                "id": "59615278-e604-44f7-a270-b3eaa6857ab1",
+                "slot": 1
+              }
+            }
+          }
+        },
+        "45625c0a-44aa-4652-892a-3fc211e66bd8": {
+          "name": "Sample Latents",
+          "label": "advanced",
+          "description": "Generate latents for the true branch.",
+          "expression": {
+            "method": "KSampler",
+            "args": {
+              "positive": "db8887e9-5222-4eb1-bab4-a3d8111aea1e",
+              "negative": "a531da53-1f6f-4287-8748-438b017299c2",
+              "seed": "c0d720fd-247c-459c-ac47-05aaa6911436",
+              "model": {
+                "id": "59615278-e604-44f7-a270-b3eaa6857ab1",
+                "slot": 0
+              },
+              "latent_image": "14a9a11b-3918-4a1e-8ccc-538c2529b7fd",
+              "steps": "e51ccd43-e1ea-4c8b-a57f-542919ca0035",
+              "cfg": "2a4de1b0-7f90-4581-8126-0206dc099a6f",
+              "sampler_name": "eb9c6564-ba7f-4868-83b9-6d4b0a822bfc",
+              "scheduler": "87e1ab3b-373d-4f7a-a434-cf718629824f",
+              "denoise": "07e82859-efe7-472c-a1bb-dc3526380158"
+            }
+          }
+        }
+      },
+      "name": "True Branch",
+      "comment": "Prompt branch used when the selector is true.",
+      "collapsed": false
+    },
+    "a1e126ec-de2e-4cd8-931a-e05d1c8ea775": {
+      "name": "Selected Latents",
+      "label": "advanced",
+      "description": "Pick the latents from the selected branch.",
+      "expression": {
+        "method": "Selector",
+        "args": {
+          "switch": "9366e253-ca8e-4e38-9db7-131bad8f446f",
+          "on_false": "1571490c-ad26-4ccc-956f-6e82626b8424",
+          "on_true": "45625c0a-44aa-4652-892a-3fc211e66bd8"
+        }
+      }
+    },
+    "fe5196bd-a85f-4957-a38f-07f932ade2fd": {
+      "name": "Selected Image",
+      "label": "basic",
+      "description": "Generated image from the selected branch.",
+      "tags": [
+        "view:output"
+      ],
+      "expression": {
+        "method": "VAEDecode",
+        "args": {
+          "samples": "a1e126ec-de2e-4cd8-931a-e05d1c8ea775",
+          "vae": {
+            "id": "59615278-e604-44f7-a270-b3eaa6857ab1",
+            "slot": 2
+          }
+        }
+      }
+    }
+  },
+  "name": "Selector SD 1.5 Branch Test - Selected Image",
+  "tags": [],
+  "comment": "",
+  "collapsed": true,
+  "mtime": 1778136729714,
+  "external": true
+}
