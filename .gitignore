@@ -1,8 +1,4 @@
-*
-!.gitignore
-!README.md
-!PROGRAMMING_MANUAL.md
-!anymatix/
-!anymatix/**
-!assets/
-!assets/**
+.DS_Store
+Thumbs.db
+**/*.tmp
+anymatix/conflicts/
